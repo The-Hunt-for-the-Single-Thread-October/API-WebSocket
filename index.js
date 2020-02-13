@@ -13,10 +13,11 @@ io.sockets.on('connection', socket => {
         };
         socket.join(room.id);
         io.sockets.in(room.id).emit('roomJoined', room);
-        console.log("rooms",io.sockets.adapter.rooms)
+        console.log(`${socket.id} a créé la room ${room.id}`);
     });
 
-    socket.on('join', room => {
+    socket.on('join', roomStr => {
+        let room = JSON.parse(roomStr);
         if (room.clients < maxClients) {
             let updatedRoom = {
                 id: room.id,
@@ -26,13 +27,13 @@ io.sockets.on('connection', socket => {
 
             socket.join(updatedRoom);
             io.sockets.in(updatedRoom.id).emit('roomJoined', updatedRoom);
-            console.log(room,io.sockets.adapter.rooms[updatedRoom.id].sockets);
+            console.log(`${socket.id} a rejoint la room ${room.id}, il y a ${room.clients} clients.`);
         } else {
             console.log("room full");
         }
     });
 });
 
-server.listen(4001, () => {
-    console.log('listening on *:4001');
+server.listen(4002, () => {
+    console.log('listening on *:4002');
 });
