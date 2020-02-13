@@ -1,26 +1,38 @@
 const app = require('express')();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
+const uuid = require('uuid/v4');
+const maxClients = 3;
 
-
-io.sockets.on('connection', function(socket) {
-    // once a client has connected, we expect to get a ping from them saying what room they want to join
-    socket.on('create', function() {
-        let roomId = Math.floor((Math.random() * 10000) + 1);
-        socket.join(roomId);
-        io.sockets.in(roomId).emit('message', roomId);
-        console.log(roomId,io.sockets.adapter.rooms[roomId].sockets)
+io.sockets.on('connection', socket => {
+    socket.on('create', () => {
+        let room = {
+            id: uuid(),
+            maxClients: maxClients,
+            clients: 1
+        };
+        socket.join(room.id);
+        io.sockets.in(room.id).emit('roomJoined', room);
         console.log("rooms",io.sockets.adapter.rooms)
-
     });
 
-    socket.on('join', function(room) {
-        socket.join(room);
-        io.sockets.in(room).emit('message', 'c bonn '+room);
-        console.log(room,io.sockets.adapter.rooms[room].sockets)
+    socket.on('join', room => {
+        if (room.clients < maxClients) {
+            let updatedRoom = {
+                id: room.id,
+                maxClients: room.maxClients,
+                clients: room.clients + 1
+            };
+
+            socket.join(updatedRoom);
+            io.sockets.in(updatedRoom.id).emit('roomJoined', updatedRoom);
+            console.log(room,io.sockets.adapter.rooms[updatedRoom.id].sockets);
+        } else {
+            console.log("room full");
+        }
     });
 });
 
-server.listen(4000, () => {
-    console.log('listening on *:4000');
+server.listen(4001, () => {
+    console.log('listening on *:4001');
 });
