@@ -25,7 +25,7 @@ io.sockets.on('connection', socket => {
                 clients: parseInt(room.clients) + 1
             };
 
-            socket.join(updatedRoom);
+            socket.join(updatedRoom.id);
             io.sockets.in(updatedRoom.id).emit('roomJoined', updatedRoom);
             console.log(`${socket.id} a rejoint la room ${room.id}, il y a ${updatedRoom.clients} clients.`);
         } else {
