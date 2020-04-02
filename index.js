@@ -22,7 +22,7 @@ io.sockets.on('connection', socket => {
             let updatedRoom = {
                 id: room.id,
                 maxClients: room.maxClients,
-                clients: room.clients + 1
+                clients: parseInt(room.clients) + 1
             };
 
             socket.join(updatedRoom);
