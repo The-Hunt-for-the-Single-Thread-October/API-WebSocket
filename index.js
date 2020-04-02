@@ -27,7 +27,7 @@ io.sockets.on('connection', socket => {
 
             socket.join(updatedRoom);
             io.sockets.in(updatedRoom.id).emit('roomJoined', updatedRoom);
-            console.log(`${socket.id} a rejoint la room ${room.id}, il y a ${room.clients} clients.`);
+            console.log(`${socket.id} a rejoint la room ${room.id}, il y a ${updatedRoom.clients} clients.`);
         } else {
             console.log("room full");
         }
