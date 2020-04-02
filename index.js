@@ -32,6 +32,11 @@ io.sockets.on('connection', socket => {
             console.log("room full");
         }
     });
+
+    socket.on('shipsPlaced', (roomId,shipsArray) => {
+        socket.to(roomId).emit(shipsArray);
+        console.log(`${socket.id} a envoyé le placement de ses bateaux`);
+    });
 });
 
 server.listen(4002, () => {
