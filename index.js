@@ -34,7 +34,7 @@ io.sockets.on('connection', socket => {
     });
 
     socket.on('shipsPlaced', (roomId,shipsArray) => {
-        socket.to(roomId).emit(shipsArray);
+        socket.to(roomId).emit("shipsPlaced",shipsArray);
         console.log(`${socket.id} a envoyé le placement de ses bateaux`);
     });
 });
