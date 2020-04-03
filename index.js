@@ -37,6 +37,16 @@ io.sockets.on('connection', socket => {
         socket.to(roomId).emit("shipsPlaced",shipsArray);
         console.log(`${socket.id} a envoyé le placement de ses bateaux`);
     });
+
+    socket.on('touched', (roomId,coordinatesArray) => {
+        socket.to(roomId).emit("touched",coordinatesArray);
+        console.log(`${socket.id} a touché un bateau`);
+    });
+
+    socket.on('missed', (roomId,coordinatesArray) => {
+        socket.to(roomId).emit("missed",coordinatesArray);
+        console.log(`${socket.id} a tiré dans le vide`);
+    });
 });
 
 server.listen(4002, () => {
