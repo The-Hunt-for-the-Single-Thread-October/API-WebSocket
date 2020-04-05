@@ -47,6 +47,11 @@ io.sockets.on('connection', socket => {
         socket.to(roomId).emit("missed",coordinatesArray);
         console.log(`${socket.id} a tiré dans le vide`);
     });
+
+    socket.on('win', (roomId) => {
+        socket.to(roomId).emit("win", null);
+        console.log(`La partie ${roomId} est terminée`);
+    });
 });
 
 server.listen(4002, () => {
