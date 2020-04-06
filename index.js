@@ -52,6 +52,11 @@ io.sockets.on('connection', socket => {
         socket.to(roomId).emit("win", null);
         console.log(`La partie ${roomId} est terminée`);
     });
+
+    socket.on('sink', (roomId,shipInfo) => {
+        socket.to(roomId).emit("sink", shipInfo);
+        console.log(`sink`);
+    });
 });
 
 server.listen(4002, () => {
