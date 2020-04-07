@@ -28,6 +28,24 @@ io.sockets.on('connection', socket => {
             socket.join(updatedRoom.id);
             io.sockets.in(updatedRoom.id).emit('roomJoined', updatedRoom);
             console.log(`${socket.id} a rejoint la room ${room.id}, il y a ${updatedRoom.clients} clients.`);
+
+
+            if(updatedRoom.clients == maxClients){
+                let clients = Object.keys(io.sockets.adapter.rooms[room.id].sockets)
+                let random = Math.floor(Math.random() * (2 - 1)) + 1;
+                let orderArray = [];
+
+                if(random === 1){
+                    orderArray[0] = clients[1]
+                    orderArray[1] = clients[2]
+                }else{
+                    orderArray[0] = clients[2]
+                    orderArray[1] = clients[1]
+                }
+
+                io.sockets.in(updatedRoom.id).emit('randomStart', orderArray);
+            }
+
         } else {
             console.log("room full");
         }
