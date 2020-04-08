@@ -32,7 +32,7 @@ io.sockets.on('connection', socket => {
 
             if(updatedRoom.clients == maxClients){
                 let clients = Object.keys(io.sockets.adapter.rooms[room.id].sockets)
-                let random = Math.floor(Math.random() * (2 - 1)) + 1;
+                let random = Math.round(Math.random() * (2 - 1)) + 1;
                 let orderArray = [];
 
                 if(random === 1){
